@@ -41,6 +41,12 @@ hist(m1.1$residuals); kurtosis(m1.1$residuals); skewness(m1.1$residuals)
 # still doesn't look great,
 # highly leptokurtic and strong right skew
 
+# check binomial regression in the zinb model
+dat1$Pins.logical = dat1$Pins > 0
+m1.2 = glm(Pins.logical ~ ATotal, data = dat1, family = "binomial")
+summary(m1.2)
+# That's odd -- why would the ZINB binomial coefficient not agree with the GLM binomial coefficient?
+
 # Study 2 ----
 dat2$Sex.f = as.factor(dat2$Sex)
 hist(dat2$PinToal); table(dat2$PinToal)
@@ -88,12 +94,20 @@ ggplot(dat2[!is.na(dat2$Sex.f),], aes(x = BPAQTotal, y = PinsFront, col = Sex.f)
   ggtitle("Study 2: Pins and Buss-Perry Aggression \n Poisson regression")
 
 # Zero-infl models?
-m2.3 = zeroinfl(Pins ~ ATotal, data = dat1, dist = "negbin")
+m2.3 = zeroinfl(PinToal ~ BPAQTotal, data = dat2, dist = "negbin")
 summary(m2.3)
 hist(m2.3$residuals); kurtosis(m2.3$residuals); skewness(m2.3$residuals) 
-m2.4 = zeroinfl(Pins ~ ATotal, data = dat1, dist = "negbin")
+m2.4 = zeroinfl(PinsFront ~ BPAQTotal, data = dat2, dist = "negbin")
 summary(m2.4)
 hist(m2.4$residuals); kurtosis(m2.4$residuals); skewness(m2.4$residuals) 
-m2.5 = zeroinfl(Pins ~ ATotal, data = dat1, dist = "negbin")
+m2.5 = zeroinfl(PinsBack ~ BPAQTotal, data = dat2, dist = "negbin")
 summary(m2.5)
 hist(m2.5$residuals); kurtosis(m2.5$residuals); skewness(m2.5$residuals) 
+
+# binomial models?
+m2.6 = glm((PinToal > 0) ~ BPAQTotal, data = dat2, family = "binomial")
+summary(m2.6)
+m2.7 = glm((PinsFront > 0) ~ BPAQTotal, data = dat2, family = "binomial")
+summary(m2.7)
+m2.8 = glm((PinsBack > 0) ~ BPAQTotal, data = dat2, family = "binomial")
+summary(m2.8)
