@@ -69,6 +69,10 @@ ggplot(dat2[!is.na(dat2$Sex.f),], aes(x = BPAQTotal, y = PinToal, col = Sex.f)) 
   geom_smooth(method = "glm", method.args = list(family = "poisson")) +
   ggtitle("Study 2: Pins and Buss-Perry Aggression \n Poisson regression")
 
+ggplot(dat2[!is.na(dat2$Sex.f),], aes(x = soc_desirability, y = PinToal, col = Sex.f)) +
+  geom_point(alpha = .5, position = position_jitter(width = .05)) +
+  geom_smooth()
+
 m2.1 = glm(PinsBack ~ BPAQTotal, data = dat2, family = "poisson")
 summary(m2.1)
 hist(m2.1$residuals); kurtosis(m2.1$residuals); skewness(m2.1$residuals)
@@ -111,3 +115,24 @@ m2.7 = glm((PinsFront > 0) ~ BPAQTotal, data = dat2, family = "binomial")
 summary(m2.7)
 m2.8 = glm((PinsBack > 0) ~ BPAQTotal, data = dat2, family = "binomial")
 summary(m2.8)
+
+# Study 3
+dat3$Sex.f = as.factor(dat3$Sex)
+ggplot(dat3, aes(x = MoodMean, y = PinsTotal, col = Sex.f)) +
+  geom_point() + 
+  geom_smooth() +
+  ggtitle("Study 3: Mood and Pins")
+# Study 4
+dat4$Sex.f = as.factor(dat4$Sex)
+ggplot(dat4[!is.na(dat4$Sex.f),], aes(x = ATVmean, y = PinTotal, col = Sex.f)) +
+  geom_point() + 
+  geom_smooth()
+# Study 5
+dat5$Sex.f = as.factor(dat5$Sex)
+ggplot(dat5[!is.na(dat5$Sex.f),], aes(x = as.factor(PunishMotive), y = TotalPins)) +
+  geom_boxplot()
+# Study 6
+# dat6$Sex.f = as.factor(dat6$Sex)
+# ggplot(dat6[!is.na(dat6$Sex.f),], aes(x = TotalAggr_Scale, y = PinTotal, col = Sex.f)) +
+#   geom_point() + 
+#   geom_smooth()
